@@ -1,0 +1,15 @@
+FROM alpine:3.19.1
+
+USER root
+
+RUN apk update && \
+    apk add openjdk17
+
+RUN addgroup --system testgroup
+RUN adduser --system testuser --ingroup testgroup
+
+USER testuser
+
+COPY ../build/libs/spring-boot-0.0.1-SNAPSHOT.jar ./spring-boot-0.0.1-SNAPSHOT.jar
+
+ENTRYPOINT ["java","-jar","/spring-boot-0.0.1-SNAPSHOT.jar"]
