@@ -1,0 +1,15 @@
+FROM registry.access.redhat.com/ubi9-minimal:9.3-1612
+
+USER root
+
+RUN microdnf -y update && \
+    microdnf -y install java-17-openjdk
+
+RUN groupadd --system testgroup
+RUN useradd --system testuser -g testgroup
+
+USER testuser
+
+COPY ../build/libs/spring-boot-0.0.1-SNAPSHOT.jar ./spring-boot-0.0.1-SNAPSHOT.jar
+
+ENTRYPOINT ["java","-jar","/spring-boot-0.0.1-SNAPSHOT.jar"]
